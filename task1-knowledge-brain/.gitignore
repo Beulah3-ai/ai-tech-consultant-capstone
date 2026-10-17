@@ -1,0 +1,8 @@
+# Local task1 ignores
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+*.db
+powershell.bat
+.env

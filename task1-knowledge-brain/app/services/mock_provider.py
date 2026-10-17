@@ -119,11 +119,15 @@ class MockAIProvider:
         )
 
 
-def get_ai_provider() -> MockAIProvider:
+def get_ai_provider(provider_type: str | None = None):
     """
-    Factory to return the active AI provider.
-    Defaults to MockAIProvider when AI_PROVIDER=mock or when Claude API key is absent.
+    Factory to return the active AI / retrieval provider.
+    Defaults to MockAIProvider when AI_PROVIDER=mock or unspecified.
+    Returns LocalRetrievalService when provider_type or AI_PROVIDER is 'local_retrieval'.
     """
-    provider_type = os.getenv("AI_PROVIDER", "mock").lower()
-    # At this vertical slice stage, MockAIProvider is the active implementation
+    chosen = (provider_type or os.getenv("AI_PROVIDER", "mock")).lower().strip()
+    if chosen == "local_retrieval":
+        from app.services.retrieval import LocalRetrievalService
+        return LocalRetrievalService()
     return MockAIProvider(provider_name="mock")
+
