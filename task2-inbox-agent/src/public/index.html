@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Inbox Agent — Human Review Portal</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header class="app-header">
+    <div class="header-left">
+      <div class="logo-badge">TASK 2</div>
+      <div>
+        <h1>Inbox Agent — Human Review Portal</h1>
+        <p class="subtitle">AI Tech Consultant Capstone &bull; Grounded Draft Review & Autonomy Safeguards</p>
+      </div>
+    </div>
+    <div class="header-right">
+      <div class="reviewer-input-group">
+        <label for="reviewer-id">Reviewer:</label>
+        <input type="text" id="reviewer-id" value="Consultant Reviewer (ID: 01)" placeholder="Reviewer name">
+      </div>
+      <div id="service-status" class="status-pill status-connected">Connecting to Task 1...</div>
+    </div>
+  </header>
+
+  <!-- Autonomy Safeguard Bar -->
+  <section class="autonomy-section">
+    <div class="section-title-row">
+      <h2>Autonomy Safeguard Status (20-Draft Rule)</h2>
+      <span class="safeguard-badge">Safety Rule: 20 consecutive approved, unchanged drafts required for category eligibility</span>
+    </div>
+    <div id="autonomy-cards" class="autonomy-grid">
+      <!-- Injected by JavaScript -->
+    </div>
+  </section>
+
+  <!-- Main Review Layout -->
+  <main class="review-layout">
+    <!-- Left: Inbox Queue -->
+    <aside class="inbox-panel">
+      <div class="panel-header">
+        <div class="search-filter-row">
+          <input type="text" id="search-input" placeholder="Search emails by sender or subject...">
+        </div>
+        <div class="filter-pills">
+          <button class="filter-btn active" data-filter="all">All (<span id="count-all">0</span>)</button>
+          <button class="filter-btn" data-filter="pending_review">Pending (<span id="count-pending">0</span>)</button>
+          <button class="filter-btn" data-filter="approved">Approved (<span id="count-approved">0</span>)</button>
+          <button class="filter-btn" data-filter="edited">Edited (<span id="count-edited">0</span>)</button>
+          <button class="filter-btn" data-filter="rejected">Rejected (<span id="count-rejected">0</span>)</button>
+          <button class="filter-btn" data-filter="escalated">Escalated (<span id="count-escalated">0</span>)</button>
+        </div>
+      </div>
+
+      <div id="email-list" class="email-list">
+        <!-- Draft cards injected by JS -->
+      </div>
+    </aside>
+
+    <!-- Right: Review Detail Pane -->
+    <section class="detail-panel" id="detail-panel">
+      <div id="empty-state" class="empty-state">
+        <div class="empty-icon">✉️</div>
+        <h3>Select an email from the queue</h3>
+        <p>Review customer questions, inspect Task 1 grounded citations, and approve or edit suggested responses.</p>
+      </div>
+
+      <div id="detail-content" class="detail-content" style="display: none;">
+        <!-- Email Header & Classification -->
+        <div class="card email-meta-card">
+          <div class="card-header-row">
+            <div>
+              <h2 id="view-subject">Loading subject...</h2>
+              <div class="meta-line">
+                <span class="sender-label" id="view-sender">Sender</span> &bull; 
+                <span class="time-label" id="view-time">Time</span>
+              </div>
+            </div>
+            <div class="badge-stack">
+              <span id="view-priority" class="badge">PRIORITY</span>
+              <span id="view-category" class="badge">CATEGORY</span>
+              <span id="view-status" class="badge">STATUS</span>
+            </div>
+          </div>
+          <div class="email-body-box" id="view-body">
+            <!-- Email body -->
+          </div>
+        </div>
+
+        <!-- Grounded Task 1 Evidence Card -->
+        <div class="card evidence-card">
+          <div class="card-header-row">
+            <h3>Task 1 Knowledge Brain Grounding & Citations</h3>
+            <span id="evidence-provider-badge" class="pill pill-info">Local Retrieval</span>
+          </div>
+          <div id="evidence-content" class="evidence-box">
+            <!-- Evidence / Citations -->
+          </div>
+        </div>
+
+        <!-- Suggested Draft Reply Card -->
+        <div class="card reply-card">
+          <div class="card-header-row">
+            <h3>Suggested Reply Draft</h3>
+            <span class="edit-hint">Reviewer may edit response below before approving</span>
+          </div>
+          <textarea id="reply-textarea" rows="8" placeholder="Enter response here..."></textarea>
+          
+          <div class="feedback-row">
+            <div class="feedback-select-group">
+              <label for="feedback-rating">Quality Feedback Rating:</label>
+              <select id="feedback-rating">
+                <option value="accurate_and_grounded">Accurate & Grounded</option>
+                <option value="minor_edits_needed">Minor Edits Needed</option>
+                <option value="inaccurate_facts">Inaccurate / Hallucination</option>
+                <option value="unhelpful">Unhelpful / Generic</option>
+                <option value="policy_correct">Policy Correct Abstention</option>
+              </select>
+            </div>
+            <div class="notes-row">
+              <input type="text" id="reviewer-notes" placeholder="Optional internal reviewer notes or reasoning...">
+            </div>
+          </div>
+
+
+          <!-- Action Buttons -->
+          <div class="action-bar">
+            <button id="btn-approve" class="btn btn-approve">
+              &#10003; Approve (Unchanged)
+              <span class="btn-subtext">+1 to Autonomy</span>
+            </button>
+            <button id="btn-edit-approve" class="btn btn-edit">
+              &#9998; Edit & Approve
+              <span class="btn-subtext">Resets Streak</span>
+            </button>
+            <button id="btn-reject" class="btn btn-reject">
+              &#10007; Reject Draft
+              <span class="btn-subtext">Resets Streak</span>
+            </button>
+            <button id="btn-escalate" class="btn btn-escalate">
+              &#9888; Escalate Ticket
+              <span class="btn-subtext">Routes to Expert</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Audit Trail Drawer -->
+  <section class="audit-section">
+    <div class="audit-header" id="audit-toggle">
+      <h3>Review Decision Audit Trail (<span id="audit-count">0</span> records)</h3>
+      <span class="toggle-icon">&#9662;</span>
+    </div>
+    <div id="audit-table-wrapper" class="audit-table-wrapper" style="display: none;">
+      <table class="audit-table">
+        <thead>
+          <tr>
+            <th>Timestamp</th>
+            <th>Email ID</th>
+            <th>Category</th>
+            <th>Reviewer</th>
+            <th>Action</th>
+            <th>Diff Detected</th>
+            <th>Streak Count</th>
+            <th>Autonomy Status</th>
+            <th>Notes</th>
+          </tr>
+        </thead>
+        <tbody id="audit-tbody">
+          <!-- Rows injected by JS -->
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <script src="app.js"></script>
+</body>
+</html>

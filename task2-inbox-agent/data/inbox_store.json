@@ -1,0 +1,103 @@
+{
+  "version": "1.0",
+  "saved_at": "2026-10-17T17:07:07.097Z",
+  "drafts": {
+    "draft_email_audit_01": {
+      "id": "draft_email_audit_01",
+      "email_id": "email_audit_01",
+      "sender": "Auditor <auditor@example.synthetic.test>",
+      "subject": "DNS Question",
+      "body": "DNS details please",
+      "category": "technical_support",
+      "priority": "medium",
+      "confidence": 0.9,
+      "suggested_reply": "Hello,\n\nThank you for reaching out. Here is the verified technical guidance for your question:\n\nDNS answer\n\nReferenced Documentation:\n- doc1\n\nPlease let us know if you need any additional assistance!\n\nBest regards,\nTechnical Consultant Support",
+      "sources": [
+        "doc1"
+      ],
+      "answered": true,
+      "needs_escalation": false,
+      "provider": "local_retrieval",
+      "is_mock": false,
+      "disclaimer": "ok",
+      "status": "approved",
+      "created_at": "2026-10-17T17:07:00.642Z",
+      "reviewed_at": "2026-10-17T17:07:07.096Z",
+      "reviewer_id": "QA Inspector",
+      "final_reply": "Hello,\n\nThank you for reaching out. Here is the verified technical guidance for your question:\n\nDNS answer\n\nReferenced Documentation:\n- doc1\n\nPlease let us know if you need any additional assistance!\n\nBest regards,\nTechnical Consultant Support",
+      "notes": "Approved without changes"
+    }
+  },
+  "auditTrail": [
+    {
+      "id": "audit_df0097c023b9",
+      "email_id": "email_audit_01",
+      "action": "approve",
+      "category": "technical_support",
+      "reviewer_id": "QA Inspector",
+      "timestamp": "2026-10-17T17:07:07.096Z",
+      "diff_detected": false,
+      "qualifies_for_autonomy": true,
+      "consecutive_approved_count": 2,
+      "autonomy_eligible": false,
+      "notes": "Approved without changes"
+    },
+    {
+      "id": "audit_d5e48371e40f",
+      "email_id": "email_audit_01",
+      "action": "approve",
+      "category": "technical_support",
+      "reviewer_id": "Lead Consultant 01",
+      "timestamp": "2026-10-17T17:07:00.644Z",
+      "diff_detected": false,
+      "qualifies_for_autonomy": true,
+      "consecutive_approved_count": 1,
+      "autonomy_eligible": false,
+      "notes": "Verified DNS IP address matches documentation."
+    }
+  ],
+  "autonomyState": {
+    "technical_support": {
+      "category": "technical_support",
+      "consecutive_approved_count": 2,
+      "target_threshold": 20,
+      "is_eligible": false,
+      "last_updated": "2026-10-17T17:07:07.096Z"
+    },
+    "billing": {
+      "category": "billing",
+      "consecutive_approved_count": 0,
+      "target_threshold": 20,
+      "is_eligible": false,
+      "last_updated": "2026-10-17T17:07:00.642Z"
+    },
+    "onboarding": {
+      "category": "onboarding",
+      "consecutive_approved_count": 0,
+      "target_threshold": 20,
+      "is_eligible": false,
+      "last_updated": "2026-10-17T17:07:00.642Z"
+    },
+    "feature_requests": {
+      "category": "feature_requests",
+      "consecutive_approved_count": 0,
+      "target_threshold": 20,
+      "is_eligible": false,
+      "last_updated": "2026-10-17T17:07:00.642Z"
+    },
+    "account_configuration": {
+      "category": "account_configuration",
+      "consecutive_approved_count": 0,
+      "target_threshold": 20,
+      "is_eligible": false,
+      "last_updated": "2026-10-17T17:07:00.642Z"
+    },
+    "out_of_scope": {
+      "category": "out_of_scope",
+      "consecutive_approved_count": 0,
+      "target_threshold": 20,
+      "is_eligible": false,
+      "last_updated": "2026-10-17T17:07:00.642Z"
+    }
+  }
+}

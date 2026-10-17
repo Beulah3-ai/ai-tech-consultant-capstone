@@ -1,0 +1,8 @@
+node_modules/
+dist/
+powershell.bat
+.env
+*.log
+coverage/
+data/*.db
+data/inbox_state.json

@@ -1,0 +1,497 @@
+[
+  {
+    "id": "syn_email_001",
+    "synthetic": true,
+    "sender": "Synthetic User 01 <synthetic_client_01@example.synthetic.test>",
+    "subject": "Help connecting custom domain - A Record question",
+    "body": "Hello, I am trying to point my custom domain to my Brilliant Directories website. What IP address should I set my A-Record to in my DNS registrar? Thanks, Sarah.",
+    "received_at": "2026-10-17T08:15:00Z",
+    "expected_category": "technical_support"
+  },
+  {
+    "id": "syn_email_002",
+    "synthetic": true,
+    "sender": "Synthetic User 02 <synthetic_client_02@example.synthetic.test>",
+    "subject": "Stripe payment gateway configuration error",
+    "body": "Hi Support team, our Stripe integration is failing during member checkout. Where in the admin dashboard do I enter our Stripe Publishable Key and Secret Key? Is webhook configuration required?",
+    "received_at": "2026-10-17T08:30:00Z",
+    "expected_category": "billing"
+  },
+  {
+    "id": "syn_email_003",
+    "synthetic": true,
+    "sender": "Synthetic User 03 <synthetic_client_03@example.synthetic.test>",
+    "subject": "Bulk member CSV import template",
+    "body": "We have 1,500 existing directory members from our previous platform. How do we format our CSV file to import them without errors? Does the system support bulk custom fields?",
+    "received_at": "2026-10-17T08:45:00Z",
+    "expected_category": "onboarding"
+  },
+  {
+    "id": "syn_email_004",
+    "synthetic": true,
+    "sender": "Synthetic User 04 <synthetic_client_04@example.synthetic.test>",
+    "subject": "Feature Request: Native Zapier & Make Integration",
+    "body": "Hello! We would love to see an official Zapier connector to sync new directory signups with our HubSpot CRM automatically. Is this on your product roadmap?",
+    "received_at": "2026-10-17T09:00:00Z",
+    "expected_category": "feature_requests"
+  },
+  {
+    "id": "syn_email_005",
+    "synthetic": true,
+    "sender": "Synthetic User 05 <synthetic_client_05@example.synthetic.test>",
+    "subject": "Invite sub-admin with limited permissions",
+    "body": "Can I invite a virtual assistant to only manage member listings without giving them access to our Stripe financial and billing settings? Where is this configured?",
+    "received_at": "2026-10-17T09:15:00Z",
+    "expected_category": "account_configuration"
+  },
+  {
+    "id": "syn_email_006",
+    "synthetic": true,
+    "sender": "Synthetic User 06 <synthetic_client_06@example.synthetic.test>",
+    "subject": "Sourdough bread starter temperature question",
+    "body": "Can you advise me what fermentation temperature is ideal for sourdough starter with rye flour? How long should bulk fermentation take at 78 degrees?",
+    "received_at": "2026-10-17T09:30:00Z",
+    "expected_category": "out_of_scope"
+  },
+  {
+    "id": "syn_email_007",
+    "synthetic": true,
+    "sender": "Synthetic User 07 <synthetic_client_07@example.synthetic.test>",
+    "subject": "URGENT: Entire directory site throwing 500 error after DNS change",
+    "body": "URGENT OUTAGE: Our domain was just updated and now every visitor gets a 500 Internal Server Error. Please inspect our server immediately!",
+    "received_at": "2026-10-17T09:45:00Z",
+    "expected_category": "technical_support"
+  },
+  {
+    "id": "syn_email_008",
+    "synthetic": true,
+    "sender": "Synthetic User 08 <synthetic_client_08@example.synthetic.test>",
+    "subject": "Duplicate charge on monthly software subscription",
+    "body": "Hi, I was billed twice on October 1st for our monthly directory license fee ($149 charged two times). Please refund the duplicate invoice immediately.",
+    "received_at": "2026-10-17T10:00:00Z",
+    "expected_category": "billing"
+  },
+  {
+    "id": "syn_email_009",
+    "synthetic": true,
+    "sender": "Synthetic User 09 <synthetic_client_09@example.synthetic.test>",
+    "subject": "Setting up top-level and sub-level categories",
+    "body": "We are structuring a nationwide medical directory. How do we configure parent medical specialties and sub-specialty tags during onboarding?",
+    "received_at": "2026-10-17T10:15:00Z",
+    "expected_category": "onboarding"
+  },
+  {
+    "id": "syn_email_010",
+    "synthetic": true,
+    "sender": "Synthetic User 10 <synthetic_client_10@example.synthetic.test>",
+    "subject": "Request for native iOS and Android mobile app",
+    "body": "Do you offer or plan to build a white-label mobile app that members can download from the Apple App Store and Google Play Store?",
+    "received_at": "2026-10-17T10:30:00Z",
+    "expected_category": "feature_requests"
+  },
+  {
+    "id": "syn_email_011",
+    "synthetic": true,
+    "sender": "Synthetic User 11 <synthetic_client_11@example.synthetic.test>",
+    "subject": "Changing admin contact email and notification alerts",
+    "body": "Where do I update the notification email address so that lead alert emails and signup receipts go to notifications@mycompany.com instead of my personal Gmail?",
+    "received_at": "2026-10-17T10:45:00Z",
+    "expected_category": "account_configuration"
+  },
+  {
+    "id": "syn_email_012",
+    "synthetic": true,
+    "sender": "Synthetic User 12 <synthetic_client_12@example.synthetic.test>",
+    "subject": "Transmission repair advice for 2014 Honda Civic",
+    "body": "My 2014 Honda Civic is making a whining noise when accelerating past 40 mph. Should I flush the transmission fluid or replace the torque converter?",
+    "received_at": "2026-10-17T11:00:00Z",
+    "expected_category": "out_of_scope"
+  },
+  {
+    "id": "syn_email_013",
+    "synthetic": true,
+    "sender": "Synthetic User 13 <synthetic_client_13@example.synthetic.test>",
+    "subject": "SSL certificate pending after 48 hours",
+    "body": "Our domain has been pointing to 54.208.12.34 for over two days, but HTTPS is still showing an invalid certificate warning in Chrome. How can we trigger SSL regeneration?",
+    "received_at": "2026-10-17T11:15:00Z",
+    "expected_category": "technical_support"
+  },
+  {
+    "id": "syn_email_014",
+    "synthetic": true,
+    "sender": "Synthetic User 14 <synthetic_client_14@example.synthetic.test>",
+    "subject": "Tax exemption certificate on business invoice",
+    "body": "We are a 501(c)(3) non-profit organization. Can you remove sales tax from our invoices and update our billing profile with our tax exempt certificate?",
+    "received_at": "2026-10-17T11:30:00Z",
+    "expected_category": "billing"
+  },
+  {
+    "id": "syn_email_015",
+    "synthetic": true,
+    "sender": "Synthetic User 15 <synthetic_client_15@example.synthetic.test>",
+    "subject": "Step-by-step setup wizard help",
+    "body": "I just signed up for the platform. Is there an onboarding checklist or guided wizard to help us configure our homepage banner, logo, and search filters?",
+    "received_at": "2026-10-17T11:45:00Z",
+    "expected_category": "onboarding"
+  },
+  {
+    "id": "syn_email_016",
+    "synthetic": true,
+    "sender": "Synthetic User 16 <synthetic_client_16@example.synthetic.test>",
+    "subject": "Feature request: Multi-currency support (EUR, GBP, CAD)",
+    "body": "Our directory operates across Europe and North America. Can we enable checkout in EUR and GBP depending on member location?",
+    "received_at": "2026-10-17T12:00:00Z",
+    "expected_category": "feature_requests"
+  },
+  {
+    "id": "syn_email_017",
+    "synthetic": true,
+    "sender": "Synthetic User 17 <synthetic_client_17@example.synthetic.test>",
+    "subject": "Updating site timezone for event calendar",
+    "body": "Events posted on our site are displaying in UTC instead of Eastern Standard Time (EST). Where do we set the system timezone in admin settings?",
+    "received_at": "2026-10-17T12:15:00Z",
+    "expected_category": "account_configuration"
+  },
+  {
+    "id": "syn_email_018",
+    "synthetic": true,
+    "sender": "Synthetic User 18 <synthetic_client_18@example.synthetic.test>",
+    "subject": "What is the best investment portfolio for retirement?",
+    "body": "Should I invest in index funds or high-yield dividend stocks for my Roth IRA? What percentage of bond allocation do you suggest for a 35-year-old?",
+    "received_at": "2026-10-17T12:30:00Z",
+    "expected_category": "out_of_scope"
+  },
+  {
+    "id": "syn_email_019",
+    "synthetic": true,
+    "sender": "Synthetic User 19 <synthetic_client_19@example.synthetic.test>",
+    "subject": "Webhook delivery failing with 403 Forbidden",
+    "body": "Our webhook endpoint configured to capture member signup events is receiving 403 Forbidden responses. How do we authenticate webhook payloads?",
+    "received_at": "2026-10-17T12:45:00Z",
+    "expected_category": "technical_support"
+  },
+  {
+    "id": "syn_email_020",
+    "synthetic": true,
+    "sender": "Synthetic User 20 <synthetic_client_20@example.synthetic.test>",
+    "subject": "How to update credit card on file for directory plan",
+    "body": "Our corporate credit card expired last week. Can you send a secure link or tell us where in the portal we can update our billing card details?",
+    "received_at": "2026-10-17T13:00:00Z",
+    "expected_category": "billing"
+  },
+  {
+    "id": "syn_email_021",
+    "synthetic": true,
+    "sender": "Synthetic User 21 <synthetic_client_21@example.synthetic.test>",
+    "subject": "Setting up membership tiers (Free vs Featured)",
+    "body": "We want to offer a free basic listing and a $49/mo featured listing with a badge and top placement. How do we set up these tiers during onboarding?",
+    "received_at": "2026-10-17T13:15:00Z",
+    "expected_category": "onboarding"
+  },
+  {
+    "id": "syn_email_022",
+    "synthetic": true,
+    "sender": "Synthetic User 22 <synthetic_client_22@example.synthetic.test>",
+    "subject": "Feature Request: Dark mode theme toggle for directory visitors",
+    "body": "Many of our directory users are tech professionals who prefer dark mode. Can you add a dark mode toggle widget for frontend users?",
+    "received_at": "2026-10-17T13:30:00Z",
+    "expected_category": "feature_requests"
+  },
+  {
+    "id": "syn_email_023",
+    "synthetic": true,
+    "sender": "Synthetic User 23 <synthetic_client_23@example.synthetic.test>",
+    "subject": "Admin session auto-logout timeout setting",
+    "body": "Our admin staff gets logged out every 15 minutes of inactivity. Can we extend the session timeout length to 4 hours in security preferences?",
+    "received_at": "2026-10-17T13:45:00Z",
+    "expected_category": "account_configuration"
+  },
+  {
+    "id": "syn_email_024",
+    "synthetic": true,
+    "sender": "Synthetic User 24 <synthetic_client_24@example.synthetic.test>",
+    "subject": "Best dog food brands for allergic golden retrievers",
+    "body": "Hi team, my 3-year-old golden retriever has itchy skin and ear infections. Do you recommend grain-free salmon kibble or hydrolyzed protein food?",
+    "received_at": "2026-10-17T14:00:00Z",
+    "expected_category": "out_of_scope"
+  },
+  {
+    "id": "syn_email_025",
+    "synthetic": true,
+    "sender": "Synthetic User 25 <synthetic_client_25@example.synthetic.test>",
+    "subject": "Google Maps API key quota exceeded on search page",
+    "body": "The location radius search on our website says 'This page can\\'t load Google Maps correctly'. Where do we enter our Google Maps Geocoding API key?",
+    "received_at": "2026-10-17T14:15:00Z",
+    "expected_category": "technical_support"
+  },
+  {
+    "id": "syn_email_026",
+    "synthetic": true,
+    "sender": "Synthetic User 26 <synthetic_client_26@example.synthetic.test>",
+    "subject": "Annual billing discount inquiry",
+    "body": "We are currently paying monthly for our directory plan. Is there a discount if we switch to an annual prepayment plan?",
+    "received_at": "2026-10-17T14:30:00Z",
+    "expected_category": "billing"
+  },
+  {
+    "id": "syn_email_027",
+    "synthetic": true,
+    "sender": "Synthetic User 27 <synthetic_client_27@example.synthetic.test>",
+    "subject": "Customizing member signup form fields",
+    "body": "During our launch phase, we need doctors to enter their medical license number and clinic address. How do we add custom fields to the signup form?",
+    "received_at": "2026-10-17T14:45:00Z",
+    "expected_category": "onboarding"
+  },
+  {
+    "id": "syn_email_028",
+    "synthetic": true,
+    "sender": "Synthetic User 28 <synthetic_client_28@example.synthetic.test>",
+    "subject": "Feature Request: WhatsApp chat button on member profiles",
+    "body": "Can you add a 1-click WhatsApp messaging button so directory visitors can chat directly with listed business members?",
+    "received_at": "2026-10-17T15:00:00Z",
+    "expected_category": "feature_requests"
+  },
+  {
+    "id": "syn_email_029",
+    "synthetic": true,
+    "sender": "Synthetic User 29 <synthetic_client_29@example.synthetic.test>",
+    "subject": "Change site name and meta description in SEO settings",
+    "body": "Where do I update the default website browser title and search engine description for our home page?",
+    "received_at": "2026-10-17T15:15:00Z",
+    "expected_category": "account_configuration"
+  },
+  {
+    "id": "syn_email_030",
+    "synthetic": true,
+    "sender": "Synthetic User 30 <synthetic_client_30@example.synthetic.test>",
+    "subject": "How to repair a leaking kitchen faucet cartridge",
+    "body": "My Moen single-handle kitchen faucet is dripping from the aerator when turned off. Do I need to replace the 1225 cartridge or the O-rings?",
+    "received_at": "2026-10-17T15:30:00Z",
+    "expected_category": "out_of_scope"
+  },
+  {
+    "id": "syn_email_031",
+    "synthetic": true,
+    "sender": "Synthetic User 31 <synthetic_client_31@example.synthetic.test>",
+    "subject": "URGENT: Checkout payment page failing for all members",
+    "body": "CRITICAL: None of our new members are able to complete checkout! Stripe says 'Invalid API Key provided'. Please help immediately!",
+    "received_at": "2026-10-17T15:45:00Z",
+    "expected_category": "billing"
+  },
+  {
+    "id": "syn_email_032",
+    "synthetic": true,
+    "sender": "Synthetic User 32 <synthetic_client_32@example.synthetic.test>",
+    "subject": "Custom CSS styling not applying on search results page",
+    "body": "I added custom CSS to change the button color to #0055ff, but the changes do not show up after saving. Is there a server-side cache that needs to be cleared?",
+    "received_at": "2026-10-17T16:00:00Z",
+    "expected_category": "technical_support"
+  },
+  {
+    "id": "syn_email_033",
+    "synthetic": true,
+    "sender": "Synthetic User 33 <synthetic_client_33@example.synthetic.test>",
+    "subject": "Configuring default search radius miles vs kilometers",
+    "body": "We are launching in the UK and Australia. How do we change the default search distance unit from miles to kilometers across the entire directory?",
+    "received_at": "2026-10-17T16:15:00Z",
+    "expected_category": "onboarding"
+  },
+  {
+    "id": "syn_email_034",
+    "synthetic": true,
+    "sender": "Synthetic User 34 <synthetic_client_34@example.synthetic.test>",
+    "subject": "Feature Request: Direct Google Calendar appointment booking",
+    "body": "We would like members to be able to sync their Google Calendar so directory visitors can schedule appointments directly from member profiles.",
+    "received_at": "2026-10-17T16:30:00Z",
+    "expected_category": "feature_requests"
+  },
+  {
+    "id": "syn_email_035",
+    "synthetic": true,
+    "sender": "Synthetic User 35 <synthetic_client_35@example.synthetic.test>",
+    "subject": "Enable reCAPTCHA on member contact forms",
+    "body": "Our members are receiving spam leads through their public profile contact forms. Where do we enable Google reCAPTCHA v2 or v3?",
+    "received_at": "2026-10-17T16:45:00Z",
+    "expected_category": "account_configuration"
+  },
+  {
+    "id": "syn_email_036",
+    "synthetic": true,
+    "sender": "Synthetic User 36 <synthetic_client_36@example.synthetic.test>",
+    "subject": "Best soil mix for growing heirloom tomatoes in containers",
+    "body": "I have 5-gallon fabric grow bags for Brandywine tomatoes. Should I mix potting soil with perlite and worm castings?",
+    "received_at": "2026-10-17T17:00:00Z",
+    "expected_category": "out_of_scope"
+  },
+  {
+    "id": "syn_email_037",
+    "synthetic": true,
+    "sender": "Synthetic User 37 <synthetic_client_37@example.synthetic.test>",
+    "subject": "Subdomain setup for staging development environment",
+    "body": "We want to setup a staging clone at staging.mydirectory.com to test customizations before deploying live. What DNS record is needed?",
+    "received_at": "2026-10-17T17:15:00Z",
+    "expected_category": "technical_support"
+  },
+  {
+    "id": "syn_email_038",
+    "synthetic": true,
+    "sender": "Synthetic User 38 <synthetic_client_38@example.synthetic.test>",
+    "subject": "Request itemized receipt with European VAT number",
+    "body": "Can you reissue our last three monthly invoices showing our company VAT registration number GB123456789 and registered address?",
+    "received_at": "2026-10-17T17:30:00Z",
+    "expected_category": "billing"
+  },
+  {
+    "id": "syn_email_039",
+    "synthetic": true,
+    "sender": "Synthetic User 39 <synthetic_client_39@example.synthetic.test>",
+    "subject": "Importing member profile photos via CSV URL column",
+    "body": "Our CSV file contains a column with image URLs hosted on AWS S3. Will the bulk import tool download and attach those photos to member listings?",
+    "received_at": "2026-10-17T17:45:00Z",
+    "expected_category": "onboarding"
+  },
+  {
+    "id": "syn_email_040",
+    "synthetic": true,
+    "sender": "Synthetic User 40 <synthetic_client_40@example.synthetic.test>",
+    "subject": "Feature Request: Member-to-member private messaging system",
+    "body": "Is there an add-on or roadmap item allowing registered members to send direct messages to each other within their member dashboard portal?",
+    "received_at": "2026-10-17T18:00:00Z",
+    "expected_category": "feature_requests"
+  },
+  {
+    "id": "syn_email_041",
+    "synthetic": true,
+    "sender": "Synthetic User 41 <synthetic_client_41@example.synthetic.test>",
+    "subject": "Two-factor authentication (2FA) for admin login",
+    "body": "Does the admin dashboard support 2FA via authenticator apps (TOTP like Google Authenticator or 1Password) to meet our enterprise security requirements?",
+    "received_at": "2026-10-17T18:15:00Z",
+    "expected_category": "account_configuration"
+  },
+  {
+    "id": "syn_email_042",
+    "synthetic": true,
+    "sender": "Synthetic User 42 <synthetic_client_42@example.synthetic.test>",
+    "subject": "How to calculate capital gains tax on rental property sale",
+    "body": "I sold a residential rental duplex in Ohio that was held for 7 years. How do I calculate depreciation recapture versus long-term capital gains tax?",
+    "received_at": "2026-10-17T18:30:00Z",
+    "expected_category": "out_of_scope"
+  },
+  {
+    "id": "syn_email_043",
+    "synthetic": true,
+    "sender": "Synthetic User 43 <synthetic_client_43@example.synthetic.test>",
+    "subject": "Member search results pagination showing duplicate listings",
+    "body": "When visitors click to page 2 of search results, some members from page 1 appear again. Is there a default sorting parameter we can configure to prevent duplicates?",
+    "received_at": "2026-10-17T18:45:00Z",
+    "expected_category": "technical_support"
+  },
+  {
+    "id": "syn_email_044",
+    "synthetic": true,
+    "sender": "Synthetic User 44 <synthetic_client_44@example.synthetic.test>",
+    "subject": "Cancellation and refund request for unused subscription period",
+    "body": "We decided to discontinue our directory project. Please cancel our account and issue a prorated refund for the remaining 9 months of our annual plan.",
+    "received_at": "2026-10-17T19:00:00Z",
+    "expected_category": "billing"
+  },
+  {
+    "id": "syn_email_045",
+    "synthetic": true,
+    "sender": "Synthetic User 45 <synthetic_client_45@example.synthetic.test>",
+    "subject": "Connecting custom email domain for transactional emails",
+    "body": "We want member welcome emails to be sent from welcome@ourdirectory.com instead of the default server domain. Where do we add SPF and DKIM DNS records?",
+    "received_at": "2026-10-17T19:15:00Z",
+    "expected_category": "onboarding"
+  },
+  {
+    "id": "syn_email_046",
+    "synthetic": true,
+    "sender": "Synthetic User 46 <synthetic_client_46@example.synthetic.test>",
+    "subject": "Feature Request: Gamification badges for top-rated members",
+    "body": "Can you build a feature that awards verified badges or gold stars to members who receive more than 10 five-star reviews?",
+    "received_at": "2026-10-17T19:30:00Z",
+    "expected_category": "feature_requests"
+  },
+  {
+    "id": "syn_email_047",
+    "synthetic": true,
+    "sender": "Synthetic User 47 <synthetic_client_47@example.synthetic.test>",
+    "subject": "Changing company billing address on platform account",
+    "body": "We relocated our corporate headquarters to Chicago. Where can we update the official billing address attached to our software subscription?",
+    "received_at": "2026-10-17T19:45:00Z",
+    "expected_category": "account_configuration"
+  },
+  {
+    "id": "syn_email_048",
+    "synthetic": true,
+    "sender": "Synthetic User 48 <synthetic_client_48@example.synthetic.test>",
+    "subject": "Best espresso grind size for Breville Barista Express",
+    "body": "What internal burr setting and dial number works best for medium-roast Colombian espresso beans on the Breville Barista Express?",
+    "received_at": "2026-10-17T20:00:00Z",
+    "expected_category": "out_of_scope"
+  },
+  {
+    "id": "syn_email_049",
+    "synthetic": true,
+    "sender": "Synthetic User 49 <synthetic_client_49@example.synthetic.test>",
+    "subject": "REST API rate limits and documentation for member sync",
+    "body": "Where can we find the OpenAPI / Swagger documentation and rate limit specifications for the Brilliant Directories REST API?",
+    "received_at": "2026-10-17T20:15:00Z",
+    "expected_category": "technical_support"
+  },
+  {
+    "id": "syn_email_050",
+    "synthetic": true,
+    "sender": "Synthetic User 50 <synthetic_client_50@example.synthetic.test>",
+    "subject": "Failed recurring payment retry schedule",
+    "body": "When a member\\'s credit card fails during renewal, how many retry attempts does the system make before suspending their profile?",
+    "received_at": "2026-10-17T20:30:00Z",
+    "expected_category": "billing"
+  },
+  {
+    "id": "syn_email_051",
+    "synthetic": true,
+    "sender": "Synthetic User 51 <synthetic_client_51@example.synthetic.test>",
+    "subject": "How to verify member identity before publishing profiles",
+    "body": "We want all new member signups to require manual admin approval before their profile becomes visible to the public. Where is this setting?",
+    "received_at": "2026-10-17T20:45:00Z",
+    "expected_category": "onboarding"
+  },
+  {
+    "id": "syn_email_052",
+    "synthetic": true,
+    "sender": "Synthetic User 52 <synthetic_client_52@example.synthetic.test>",
+    "subject": "Feature Request: Automated multi-language translation (French & Spanish)",
+    "body": "Can you integrate Google Cloud Translation API so directory listings can automatically be viewed in French and Spanish by visitors?",
+    "received_at": "2026-10-17T21:00:00Z",
+    "expected_category": "feature_requests"
+  },
+  {
+    "id": "syn_email_053",
+    "synthetic": true,
+    "sender": "Synthetic User 53 <synthetic_client_53@example.synthetic.test>",
+    "subject": "Export full audit logs for GDPR compliance audit",
+    "body": "Our legal team requires an audit export of all administrator logins and member data modifications for the past 90 days. Where do we download this?",
+    "received_at": "2026-10-17T21:15:00Z",
+    "expected_category": "account_configuration"
+  },
+  {
+    "id": "syn_email_054",
+    "synthetic": true,
+    "sender": "Synthetic User 54 <synthetic_client_54@example.synthetic.test>",
+    "subject": "Symptoms of worn out ball joints on Subaru Outback",
+    "body": "I hear a clunking noise when turning at low speeds and driving over speed bumps in my 2017 Subaru Outback. Are these symptoms of failing lower ball joints?",
+    "received_at": "2026-10-17T21:30:00Z",
+    "expected_category": "out_of_scope"
+  },
+  {
+    "id": "syn_email_055",
+    "synthetic": true,
+    "sender": "Synthetic User 55 <synthetic_client_55@example.synthetic.test>",
+    "subject": "Custom domain www vs non-www 301 redirect loop",
+    "body": "After connecting our domain, visiting https://example.com redirects to https://www.example.com in an infinite loop. How do we configure canonical domain redirection?",
+    "received_at": "2026-10-17T21:45:00Z",
+    "expected_category": "technical_support"
+  }
+]
