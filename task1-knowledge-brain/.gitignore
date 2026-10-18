@@ -6,3 +6,6 @@ __pycache__/
 *.db
 powershell.bat
 .env
+*.db-shm
+*.db-wal
+
