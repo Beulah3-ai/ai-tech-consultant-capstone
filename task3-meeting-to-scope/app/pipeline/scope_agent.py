@@ -5,6 +5,7 @@ Deterministic rule-based mapping.  No LLM involved.
 
 from __future__ import annotations
 
+import re
 from typing import List
 
 from app.schemas import (
@@ -35,6 +36,10 @@ def _looks_out_of_scope(text: str) -> bool:
     return any(phrase in lower for phrase in _OUT_OF_SCOPE_PHRASES)
 
 
+def _normalise_text(text: str) -> str:
+    return re.sub(r"\W+", " ", text.casefold()).strip()
+
+
 def _build_scope_item(
     req: ExtractedRequirement,
     feasibility_findings: List[FeasibilityFinding],
@@ -63,14 +68,22 @@ class ScopeAgent:
         findings: List[FeasibilityFinding],
     ) -> ScopeDocument:
         doc = ScopeDocument(transcript_id=reqs.transcript_id)
+        open_question_text = {
+            _normalise_text(req.description) for req in reqs.open_questions
+        }
 
         # --- Objectives from business goals ---
         for req in reqs.business_goals:
-            if not _looks_out_of_scope(req.description):
+            if (
+                not _looks_out_of_scope(req.description)
+                and _normalise_text(req.description) not in open_question_text
+            ):
                 doc.objectives.append(req.description)
 
         # --- Deliverables from functional requirements ---
         for req in reqs.functional_requirements:
+            if _normalise_text(req.description) in open_question_text:
+                continue
             if _looks_out_of_scope(req.description):
                 doc.out_of_scope.append(req.description)
             else:
@@ -79,7 +92,10 @@ class ScopeAgent:
 
         # --- User needs → in_scope ---
         for req in reqs.user_needs:
-            if not _looks_out_of_scope(req.description):
+            if (
+                not _looks_out_of_scope(req.description)
+                and _normalise_text(req.description) not in open_question_text
+            ):
                 doc.in_scope.append(
                     ScopeItem(
                         description=req.description,

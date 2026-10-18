@@ -7,7 +7,7 @@ All output is explicitly labelled as coming from a deterministic pipeline.
 from __future__ import annotations
 
 import re
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, Dict, List, Tuple
 
 from app.schemas import (
     ExtractedRequirement,
@@ -40,7 +40,7 @@ _NON_FUNCTIONAL_KEYWORDS = [
 _CONSTRAINT_KEYWORDS = [
     "budget", "timeline", "deadline", "week", "cost", "cap",
     "cannot", "limit", "constraint", "no custom server", "shared hosting",
-    "must not", "not allowed", "within",
+    "must not", "not allowed", "within", "no third-party", "browser-native only",
 ]
 _ASSUMPTION_KEYWORDS = [
     "assume", "assumption", "expect", "believing", "presuming",
@@ -76,6 +76,27 @@ def _classify_segment(text: str) -> List[RequirementType]:
     """Return ordered list of best-matching requirement types for a segment."""
     lower = text.lower()
 
+    # Unresolved questions are not commitments to deliver the feature.
+    if (
+        "?" in text
+        or any(
+            marker in lower
+            for marker in (
+                "open question",
+                "to be determined",
+                "tbd",
+                "wondering",
+                "want to know if",
+                "want to know whether",
+                "not sure",
+                "is it possible",
+                "can we",
+                "could we",
+            )
+        )
+    ):
+        return [RequirementType.OPEN_QUESTION]
+
     # Hard rule: explicit out-of-scope marker → skip (return empty)
     if any(kw in lower for kw in _OUT_OF_SCOPE_KEYWORDS):
         return []
@@ -91,16 +112,10 @@ def _classify_segment(text: str) -> List[RequirementType]:
         (_score_text(lower, _USER_NEED_KEYWORDS), RequirementType.USER_NEED),
     ]
 
-    # Collect types that scored above threshold
+    # Use the strongest single type to avoid duplicating one statement.
     threshold = 0.08
-    result = [rt for score, rt in scores if score >= threshold]
-
-    if not result:
-        # Fallback: FUNCTIONAL for any speaker segment with enough words
-        if len(text.split()) >= 8:
-            result = [RequirementType.FUNCTIONAL]
-
-    return result
+    best_score, best_type = max(scores, key=lambda item: item[0])
+    return [best_type] if best_score >= threshold else []
 
 
 def _extract_tags(text: str) -> List[str]:
@@ -132,6 +147,10 @@ def _extract_tags(text: str) -> List[str]:
 def _is_consultant_speaker(speaker: str) -> bool:
     lower = speaker.lower()
     return any(word in lower for word in ["consultant", "architect", "analyst"])
+
+
+def _normalise_requirement_text(text: str) -> str:
+    return re.sub(r"\W+", " ", text.casefold()).strip()
 
 
 def _chunk_segment(text: str, max_chars: int = 1000) -> List[str]:
@@ -172,6 +191,9 @@ class TranscriptAnalyst:
             speaker: str = seg["speaker"]
             text: str = seg["text"]
 
+            if _is_consultant_speaker(speaker):
+                continue
+
             ref = TranscriptSegmentRef(
                 transcript_id=transcript_id,
                 segment_id=seg_id,
@@ -180,7 +202,12 @@ class TranscriptAnalyst:
             )
 
             # Chunk long segments
-            chunks = _chunk_segment(text, max_chars=800)
+            chunks = [
+                sentence.strip()
+                for chunk in _chunk_segment(text, max_chars=800)
+                for sentence in re.split(r"(?<=[.!?])\s+", chunk)
+                if sentence.strip()
+            ]
 
             for chunk in chunks:
                 types = _classify_segment(chunk)
@@ -188,28 +215,26 @@ class TranscriptAnalyst:
                     continue
 
                 for req_type in types:
-                    counter += 1
-                    req_id = f"{transcript_id}-REQ-{counter:03d}"
-                    confidence = 0.7 if not _is_consultant_speaker(speaker) else 0.6
                     tags = _extract_tags(chunk)
 
                     req = ExtractedRequirement(
-                        req_id=req_id,
+                        req_id=f"{transcript_id}-REQ-{counter + 1:03d}",
                         req_type=req_type,
                         description=chunk.strip(),
                         sources=[ref],
-                        confidence=confidence,
+                        confidence=0.7,
                         verification_status=VerificationStatus.UNVERIFIED,
                         tags=tags,
                     )
 
-                    _add_to_document(doc, req)
+                    if _add_to_document(doc, req):
+                        counter += 1
 
         return doc
 
 
-def _add_to_document(doc: RequirementsDocument, req: ExtractedRequirement) -> None:
-    """Append a requirement to the correct list in the document."""
+def _add_to_document(doc: RequirementsDocument, req: ExtractedRequirement) -> bool:
+    """Append a requirement or merge its source into an equivalent one."""
     mapping = {
         RequirementType.BUSINESS_GOAL: doc.business_goals,
         RequirementType.USER_NEED: doc.user_needs,
@@ -220,4 +245,16 @@ def _add_to_document(doc: RequirementsDocument, req: ExtractedRequirement) -> No
         RequirementType.DEPENDENCY: doc.dependencies,
         RequirementType.OPEN_QUESTION: doc.open_questions,
     }
-    mapping[req.req_type].append(req)
+    destination = mapping[req.req_type]
+    normalized = _normalise_requirement_text(req.description)
+    for existing in destination:
+        if _normalise_requirement_text(existing.description) == normalized:
+            for source in req.sources:
+                if source not in existing.sources:
+                    existing.sources.append(source)
+            existing.tags = list(dict.fromkeys(existing.tags + req.tags))
+            existing.confidence = max(existing.confidence, req.confidence)
+            return False
+
+    destination.append(req)
+    return True

@@ -11,15 +11,21 @@ from app.pipeline.feasibility_agent import FeasibilityAgent
 from app.schemas import FeasibilityFinding
 
 
-def _make_kb_response(answered: bool, answer: str = "", confidence: float = 0.8, is_mock: bool = True):
+def _make_kb_response(
+    answered: bool,
+    answer: str = "",
+    confidence: float = 0.8,
+    is_mock: bool = True,
+    sources: list[str] | None = None,
+):
     """Return an httpx.Response that simulates a KB API response."""
     payload = {
         "answer": answer,
         "answered": answered,
         "confidence": confidence,
         "is_mock": is_mock,
-        "sources": [],
-        "disclaimer": "Mock response" if is_mock else None,
+        "sources": sources if sources is not None else [],
+        "disclaimer": "Mock response" if is_mock else "Grounded response",
         "provider": "mock" if is_mock else "local_retrieval",
     }
     return httpx.Response(200, json=payload)
@@ -45,13 +51,43 @@ class ErrorTransport(httpx.BaseTransport):
 
 class TestFeasibilityAgentSuccess:
     def test_answered_true(self):
-        transport = MockKBTransport(_make_kb_response(True, "Yes, supported.", 0.9, is_mock=False))
+        transport = MockKBTransport(
+            _make_kb_response(
+                True,
+                "Yes, supported.",
+                0.9,
+                is_mock=False,
+                sources=[
+                    "Voice Search Guide (https://docs.example.test/voice-search)"
+                ],
+            )
+        )
         client = httpx.Client(transport=transport)
         agent = FeasibilityAgent(kb_url="http://fakehost", http_client=client)
         result = agent.query_single("Does the platform support voice search?")
         assert result.answered is True
         assert result.kb_answer == "Yes, supported."
         assert result.error is None
+        assert result.sources == [
+            {
+                "title": "Voice Search Guide",
+                "url": "https://docs.example.test/voice-search",
+                "citation": "Voice Search Guide (https://docs.example.test/voice-search)",
+            }
+        ]
+
+    def test_answered_response_with_empty_citations_is_not_feasible(self):
+        transport = MockKBTransport(
+            _make_kb_response(True, "Yes, supported.", 0.9, is_mock=False)
+        )
+        client = httpx.Client(transport=transport)
+        agent = FeasibilityAgent(kb_url="http://fakehost", http_client=client)
+        result = agent.query_single("Does the platform support voice search?")
+        assert result.answered is False
+        assert result.confidence == 0.0
+        assert result.sources == []
+        assert result.error is not None
+        assert "source evidence" in result.error
 
     def test_answered_false_abstention(self):
         transport = MockKBTransport(_make_kb_response(False, "I cannot answer that.", 0.0, is_mock=False))
@@ -62,14 +98,30 @@ class TestFeasibilityAgentSuccess:
         assert result.error is None
 
     def test_is_mock_flag_preserved(self):
-        transport = MockKBTransport(_make_kb_response(True, "Mock answer", 0.5, is_mock=True))
+        transport = MockKBTransport(
+            _make_kb_response(
+                True,
+                "Mock answer",
+                0.5,
+                is_mock=True,
+                sources=["Mock Source (https://docs.example.test/mock)"],
+            )
+        )
         client = httpx.Client(transport=transport)
         agent = FeasibilityAgent(kb_url="http://fakehost", http_client=client)
         result = agent.query_single("Some question")
         assert result.is_mock is True
 
     def test_confidence_in_range(self):
-        transport = MockKBTransport(_make_kb_response(True, "Answer", 0.75, is_mock=False))
+        transport = MockKBTransport(
+            _make_kb_response(
+                True,
+                "Answer",
+                0.75,
+                is_mock=False,
+                sources=["Source (https://docs.example.test/source)"],
+            )
+        )
         client = httpx.Client(transport=transport)
         agent = FeasibilityAgent(kb_url="http://fakehost", http_client=client)
         result = agent.query_single("Question")
@@ -84,6 +136,58 @@ class TestFeasibilityAgentSuccess:
 
 
 class TestFeasibilityAgentFailures:
+    def test_invalid_json_response_is_not_feasible(self):
+        client = httpx.Client(
+            transport=httpx.MockTransport(
+                lambda request: httpx.Response(200, text="not valid JSON")
+            )
+        )
+        agent = FeasibilityAgent(kb_url="http://fakehost", http_client=client)
+        result = agent.query_single("Question")
+        assert result.answered is False
+        assert result.confidence == 0.0
+        assert result.sources == []
+        assert result.error is not None
+        assert "invalid JSON" in result.error
+
+    @pytest.mark.parametrize(
+        "payload",
+        [
+            ["not", "an", "object"],
+            {
+                "answer": "Unsupported payload",
+                "answered": "true",
+                "confidence": 0.9,
+                "is_mock": False,
+                "sources": ["Source (https://docs.example.test/source)"],
+                "disclaimer": "Grounded response",
+                "provider": "local_retrieval",
+            },
+            {
+                "answer": "Unsupported payload",
+                "answered": True,
+                "confidence": 0.9,
+                "is_mock": False,
+                "sources": "Source (https://docs.example.test/source)",
+                "disclaimer": "Grounded response",
+                "provider": "local_retrieval",
+            },
+        ],
+    )
+    def test_malformed_response_is_not_feasible(self, payload):
+        client = httpx.Client(
+            transport=httpx.MockTransport(
+                lambda request: httpx.Response(200, json=payload)
+            )
+        )
+        agent = FeasibilityAgent(kb_url="http://fakehost", http_client=client)
+        result = agent.query_single("Question")
+        assert result.answered is False
+        assert result.confidence == 0.0
+        assert result.sources == []
+        assert result.error is not None
+        assert "invalid response" in result.error
+
     def test_timeout_returns_error(self):
         client = httpx.Client(transport=TimeoutTransport())
         agent = FeasibilityAgent(kb_url="http://fakehost", http_client=client)

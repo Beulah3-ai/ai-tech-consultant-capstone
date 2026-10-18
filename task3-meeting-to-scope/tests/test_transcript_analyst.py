@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from copy import deepcopy
+
 import pytest
 
 from app.pipeline.transcript_analyst import TranscriptAnalyst, _chunk_segment
@@ -56,6 +58,81 @@ class TestTranscriptAnalystBasic:
         doc = analyst.analyse(transcript_c)
         all_reqs = doc.all_requirements()
         assert len(all_reqs) > 0, "Transcript C must produce requirements"
+
+    def test_consultant_turns_are_not_extracted(
+        self, analyst, transcript_a, transcript_b, transcript_c
+    ):
+        for transcript in (transcript_a, transcript_b, transcript_c):
+            doc = analyst.analyse(transcript)
+            consultant_requirements = [
+                req
+                for req in doc.all_requirements()
+                if any("consultant" in source.speaker.lower() for source in req.sources)
+            ]
+            assert consultant_requirements == []
+
+    def test_client_requirement_sources_are_preserved(self, analyst, transcript_a    ):
+        doc = analyst.analyse(transcript_a)
+        search_requirements = [
+            req for req in doc.all_requirements()
+            if "relevance-ranked full-text search" in req.description.lower()
+        ]
+        assert len(search_requirements) == 1
+        assert [source.segment_id for source in search_requirements[0].sources] == [
+            "SEG-A-02"
+        ]
+        assert search_requirements[0].sources[0].speaker == (
+            "Rachel Torres (Client Product Manager)"
+        )
+
+    def test_duplicate_client_requirement_merges_source_references(
+        self, analyst, transcript_a
+    ):
+        repeated_transcript = deepcopy(transcript_a)
+        repeated_segment = deepcopy(repeated_transcript["segments"][1])
+        repeated_segment["segment_id"] = "SEG-A-13"
+        repeated_segment["line_number"] = 13
+        repeated_transcript["segments"].append(repeated_segment)
+
+        doc = analyst.analyse(repeated_transcript)
+        matching = [
+            req for req in doc.all_requirements()
+            if "relevance-ranked full-text search" in req.description.lower()
+        ]
+
+        assert len(matching) == 1
+        assert [source.segment_id for source in matching[0].sources] == [
+            "SEG-A-02",
+            "SEG-A-13",
+        ]
+
+    def test_unresolved_saved_search_feature_is_only_an_open_question(
+        self, analyst, transcript_a
+    ):
+        doc = analyst.analyse(transcript_a)
+        saved_search_questions = [
+            req for req in doc.open_questions
+            if "saved searches" in req.description.lower()
+        ]
+        assert saved_search_questions
+        assert all(
+            "saved searches" not in req.description.lower()
+            for req in doc.functional_requirements
+        )
+
+    def test_loyalty_programme_question_is_not_extracted_as_a_requirement(
+        self, analyst, transcript_b
+    ):
+        doc = analyst.analyse(transcript_b)
+        loyalty_questions = [
+            req for req in doc.open_questions
+            if "loyalty points programme" in req.description.lower()
+        ]
+        assert loyalty_questions
+        assert all(
+            "loyalty points programme" not in req.description.lower()
+            for req in doc.functional_requirements
+        )
 
 
 class TestChunking:

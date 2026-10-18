@@ -7,6 +7,8 @@ from __future__ import annotations
 
 import uuid
 from datetime import datetime
+import math
+import re
 from typing import List, Optional
 
 from app.schemas import (
@@ -15,6 +17,22 @@ from app.schemas import (
     ProposalDocument,
     ProposalStatus,
     ScopeDocument,
+)
+
+_TIMELINE_PATTERNS = (
+    re.compile(r"\bwithin\s+(\d+)\s+weeks?\b", re.IGNORECASE),
+    re.compile(
+        r"\bdelivery\s+timeline\s+(?:of\s+)?(\d+)\s+weeks?\b",
+        re.IGNORECASE,
+    ),
+    re.compile(
+        r"\btimeline\s+(?:(?:remains|is|of)\s+)?(\d+)\s+weeks?\b",
+        re.IGNORECASE,
+    ),
+    re.compile(
+        r"\bdeadline\s+(?:(?:is|of)\s+)?(\d+)\s+weeks?\b",
+        re.IGNORECASE,
+    ),
 )
 
 
@@ -54,13 +72,27 @@ class ProposalAgent:
         if not estimation_items:
             warnings.append("No estimation items produced; proposal totals will be zero.")
 
+        deadline_weeks, ambiguous_deadline = _extract_deadline_weeks(scope)
+        if ambiguous_deadline:
+            warnings.append(
+                "Project timeline is ambiguous; milestone scheduling is omitted until clarified."
+            )
+        elif deadline_weeks is None:
+            warnings.append(
+                "No project deadline was found; milestone scheduling is omitted."
+            )
+        else:
+            warnings.append(
+                "Timeline feasibility is unverified; estimated effort has not been "
+                "validated against team capacity, availability, or dependencies."
+            )
+
         # Compute totals
         total_low = sum(e.low_hours for e in estimation_items)
         total_likely = sum(e.likely_hours for e in estimation_items)
         total_high = sum(e.high_hours for e in estimation_items)
 
-        # Generate simple milestones
-        milestones = _generate_milestones(scope, estimation_items)
+        milestones = _generate_milestones(estimation_items, deadline_weeks)
 
         return ProposalDocument(
             proposal_id=pid,
@@ -82,32 +114,66 @@ class ProposalAgent:
 
 
 def _generate_milestones(
-    scope: ScopeDocument,
     items: List[EstimationItem],
+    deadline_weeks: Optional[int] = None,
 ) -> List[Milestone]:
-    """Generate rough phase milestones from deliverables."""
-    if not items:
+    """Generate rough phase milestones bounded by an explicit project deadline."""
+    if not items or deadline_weeks is None:
         return []
 
-    # Split deliverables into thirds for 3 milestones
     n = len(items)
-    third = max(1, n // 3)
+    first_end = n // 3
+    second_end = (2 * n) // 3
+    milestone_weeks = (
+        math.ceil(deadline_weeks / 3),
+        math.ceil(2 * deadline_weeks / 3),
+        deadline_weeks,
+    )
 
-    milestones = []
-    phases = [
-        ("Discovery & Setup", 2, items[:third]),
-        ("Core Development", 5, items[third : third * 2]),
-        ("Testing & Delivery", 7, items[third * 2 :]),
-    ]
+    phase_items = (
+        items[:first_end],
+        items[first_end:second_end],
+        items[second_end:],
+    )
+    phase_names = (
+        "Discovery & Setup",
+        "Core Development",
+        "Testing & Delivery",
+    )
 
-    for name, week, phase_items in phases:
-        if phase_items:
+    milestones: List[Milestone] = []
+    for index, (name, week, deliverables) in enumerate(
+        zip(phase_names, milestone_weeks, phase_items)
+    ):
+        if deliverables or index == len(phase_names) - 1:
             milestones.append(
                 Milestone(
                     name=name,
                     week=week,
-                    deliverables=[i.task[:80] for i in phase_items],
+                    deliverables=[item.task[:80] for item in deliverables],
                 )
             )
 
     return milestones
+
+
+def _extract_deadline_weeks(scope: ScopeDocument) -> tuple[Optional[int], bool]:
+    """Return a unique explicit week deadline found in the extracted scope."""
+    texts = [
+        *scope.objectives,
+        *(item.description for item in scope.deliverables),
+        *(item.description for item in scope.in_scope),
+        *scope.assumptions,
+    ]
+    deadlines = {
+        int(match.group(1))
+        for text in texts
+        for pattern in _TIMELINE_PATTERNS
+        for match in pattern.finditer(text)
+        if int(match.group(1)) > 0
+    }
+    if len(deadlines) > 1:
+        return None, True
+    if not deadlines:
+        return None, False
+    return deadlines.pop(), False

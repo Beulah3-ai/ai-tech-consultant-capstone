@@ -62,6 +62,37 @@ class TestProcessPipeline:
         items = r.json()["proposal"]["estimation_items"]
         assert len(items) > 0
 
+    @pytest.mark.parametrize(
+        ("transcript_id", "expected_weeks"),
+        [
+            ("TRANSCRIPT-A", [2, 4, 6]),
+            ("TRANSCRIPT-B", [4, 7, 10]),
+            ("TRANSCRIPT-C", [2, 4, 6]),
+        ],
+    )
+    def test_proposal_milestones_follow_transcript_deadline(
+        self,
+        test_client,
+        transcript_id: str,
+        expected_weeks: list[int],
+    ):
+        response = test_client.post(f"/transcripts/{transcript_id}/process", json={})
+
+        assert response.status_code == 200
+        proposal = response.json()["proposal"]
+        milestones = proposal["milestones"]
+        weeks = [milestone["week"] for milestone in milestones]
+        assert weeks == expected_weeks
+        assert weeks == sorted(weeks)
+        assert milestones[-1]["name"] == "Testing & Delivery"
+        assert max(weeks) <= expected_weeks[-1]
+        assert any(
+            "Timeline feasibility is unverified" in warning
+            for warning in proposal["consistency_warnings"]
+        )
+        assert proposal["provider"] == "deterministic_pipeline"
+        assert proposal["is_mock"] is True
+
     def test_process_nonexistent_transcript_returns_404(self, test_client):
         r = test_client.post("/transcripts/NONEXISTENT/process", json={})
         assert r.status_code == 404

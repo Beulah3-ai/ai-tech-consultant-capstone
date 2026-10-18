@@ -110,6 +110,42 @@ class TestScopeAgentBasic:
         scope = scope_agent.generate_scope(reqs, [])
         assert any("saved searches" in q.lower() for q in scope.open_questions)
 
+    def test_transcript_a_saved_search_question_is_not_a_deliverable(
+        self, scope_agent, reqs_a
+    ):
+        scope = scope_agent.generate_scope(reqs_a, [])
+        assert any("saved searches" in q.lower() for q in scope.open_questions)
+        assert all(
+            "saved searches" not in item.description.lower()
+            for item in scope.deliverables + scope.in_scope
+        )
+
+    def test_transcript_b_loyalty_question_is_not_a_deliverable(
+        self, scope_agent, reqs_b
+    ):
+        scope = scope_agent.generate_scope(reqs_b, [])
+        assert any(
+            "loyalty points programme" in q.lower()
+            for q in scope.open_questions
+        )
+        assert all(
+            "loyalty points programme" not in item.description.lower()
+            for item in scope.deliverables + scope.in_scope
+        )
+
+    def test_open_question_overrides_matching_functional_requirement(self, scope_agent):
+        question = "Can the directory support saved searches?"
+        reqs = _make_reqs(
+            functional=[question],
+            open_questions=[question],
+        )
+
+        scope = scope_agent.generate_scope(reqs, [])
+
+        assert scope.open_questions == [question]
+        assert all(item.description != question for item in scope.deliverables)
+        assert all(item.description != question for item in scope.in_scope)
+
     def test_scope_from_transcript_b(self, scope_agent, reqs_b):
         scope = scope_agent.generate_scope(reqs_b, [])
         assert scope.transcript_id == "TRANSCRIPT-B"
