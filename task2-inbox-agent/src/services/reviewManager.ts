@@ -172,6 +172,24 @@ export class ReviewManager {
     if (!draft) {
       throw new Error(`Draft with ID '${draftId}' not found.`);
     }
+    // Prevent approval of answered drafts with missing or placeholder citations.
+const isApproval =
+  validated.action === "approve" ||
+  validated.action === "edit_and_approve";
+
+const hasVerifiableSources =
+  draft.sources.length > 0 &&
+  draft.sources.every(
+    source =>
+      /https?:\/\/\S+/i.test(source) &&
+      !/^doc\d+$/i.test(source.trim())
+  );
+
+if (isApproval && draft.answered && !hasVerifiableSources) {
+  throw new Error(
+    "Approval blocked: this draft contains an answer without verifiable source URLs. Escalate it for human review."
+  );
+}
 
     const now = new Date().toISOString();
     const finalReply = validated.final_reply !== undefined ? validated.final_reply : draft.suggested_reply;
