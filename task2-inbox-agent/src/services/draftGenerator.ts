@@ -66,7 +66,7 @@ export class DraftGenerator {
     const kbData = kbResult.data;
 
     // 4. Grounded answer when Knowledge Brain found verified documentation
-    if (kbData.answered) {
+    if (kbData.answered && kbData.confidence >= 0.6 && kbData.sources.length > 0)  {
       const formattedSources = kbData.sources.length > 0
         ? `\n\nReferenced Documentation:\n${kbData.sources.map(s => `- ${s}`).join("\n")}`
         : "";
