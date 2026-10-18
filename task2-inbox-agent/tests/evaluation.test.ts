@@ -332,7 +332,7 @@ describe("Task 2: Inbox Agent Evaluation & Safeguard Test Suite", () => {
       }),
     } as unknown as KnowledgeBrainClient;
 
-    const manager = new ReviewManager(mockKbClient, autonomyTracker);
+    const manager = new ReviewManager(mockKbClient, autonomyTracker,null);
     const email: CustomerEmail = {
       id: "email_audit_01",
       synthetic: true,

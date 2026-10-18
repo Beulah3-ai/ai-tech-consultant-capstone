@@ -1,0 +1,9 @@
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+powershell.bat
+.env
+data/baselines/*.json
+data/proposals/*.json
+data/audit/*.json
