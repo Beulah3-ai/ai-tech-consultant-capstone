@@ -30,3 +30,10 @@ Run each task's tests using the instructions in its directory README. Task 1 and
 ## Safety
 
 Human review is required for consequential email decisions and scope changes. The current implementation does not send customer emails autonomously.
+
+
+Deployed Links: 
+
+Task 1: https://ai-tech-consultant-capstone-mdk0.onrender.com 
+Task 2: https://ai-tech-consultant-capstone-1-n2xr.onrender.com 
+Task 3: https://ai-tech-consultant-task3-b2pq.onrender.com/docs
